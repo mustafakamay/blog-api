@@ -25,6 +25,16 @@ class PostViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = request.user
+        if instance.user != user:
+            return Response("You are not authorized to perform this action",status=400)
+        serializer = self.get_serializer(instance,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
 
 
     def destroy(self, request, *args, **kwargs):
@@ -67,6 +77,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response("Deleted successfully",status=204)
+
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'retrieve' or self.action == 'list':
