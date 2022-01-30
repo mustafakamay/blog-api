@@ -1,4 +1,4 @@
-# Offline-Messaging-Api
+# Blog-Api
 This is a blog api that I made with Python. I use Django Rest Framework as a runtime and JWT for authentication/Authorization.
 ## Build and run
 You can run the server with
